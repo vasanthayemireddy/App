@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Angular JS</title>
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script> -->
+<script data-require="angular.js@1.2.18" data-semver="1.2.18" src="http://code.angularjs.org/1.2.18/angular.min.js"></script>
+          
+  <script th:src="@{/jquery.min.js}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+  
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script> -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" > -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  
+  <!-- new lib -->
+   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <script data-require="angular.js@1.2.18" data-semver="1.2.18" src="http://code.angularjs.org/1.2.18/angular.min.js"></script> -->
+    
+<!-- new lib -->
+  
+  
+     <!--   <script th:src="@{/main.js}"></script> -->
+        <script th:src="@{/script.js}"></script>
+      <link th:href="@{/main.css}" rel="stylesheet" />
+     <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+   
+
+
+</head>
+
+<body  ng-app="ReqManagement" ng-controller="ReqController"> <br>
+
+ <body style="background-color:lightgreen;">
+          <button type="button" style="margin-right:7px;margin-top:2px" class="btn btn-primary btn-md" data-toggle="modal" data-target="#exampleModalCenter1">
+  <span class="glyphicon glyphicon-sm glyphicon-plus">Required Candidate</span>
+</button>
+<div class="modal-header" style="float:right">
+
+<input type="text" name="reqId" id="reqId" class="form-control" placeholder="search here" >
+        <button type="button"  data-dismiss="modal" ng-click="searchrequirementData(requirement)"> Search</button>
+         </div>
+<!--  <div ui-grid="gridopt" ui-grid-selection ui-grid-exporter class="grid" style="float:middle"></div>
+<button ng-click="exportXls()">Xls</button>
+ <button ng-click="exportExcel()">Excel</button>
+ <button ng-click="exportCsv()">Csv</button>
+ <button ng-click="exportText()">txt</button> 
+      <br>-->
+      <div class="container" style="text-align: center">
+  <div class="row">
+    
+
+      <div class="btn-group">
+
+        <a href="http://localhost:8090/download/excel" class="btn btn-info" role="button">Excel</a>
+        <!--<a href="http://localhost:8090/download/customers.xlsx"<button type="button" class="btn btn-default">XLSX</button>-->
+        <a href="http://localhost:8090/download/export-users" class="btn btn-info" role="button" ng-click="exportcsv()">CSV</a><!-- exportcsv()<button  class="btn btn-info"  ng-click="exportcsv()">CSV</button>-->
+        
+      </div>
+
+  </div>
+</div>
+
+      <br>
+<!-- Modal -->
+    <!-- <div  style="float:right" class="modal fade " id="exampleModalCenterView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:800px;width:70%">
+        <h5 class="modal-title " id="exampleModalLongTitle">Create Requirement</h5>
+        
+        <!-- <iframe src="pdfUrl" width="100%" height="500px">
+    		</iframe> -->
+    		
+    		<!-- <iframe src="data:application/pdf;base64,[B@12f40c25" width="100%" height="500px">
+    		</iframe> -->
+    		
+    		<!--  <iframe src="http://localhost:8080/37014c8f-6004-432f-92d7-57c8add074ef" height="80%" width="80%" name="pdfViewer"></iframe>
+    		
+    		<a ng-click="getPdf()">Show PDF</a>
+    		
+    		
+          
+          
+        
+      </div>
+      
+     <!--  <div class="modal-footer">
+           
+              <div class="form-group">
+              
+                   <input type="submit" value="Submit" class="btn blue-button btn-primary" data-submit="modal">
+                  
+                  <input type="submit" value="Submit" class="btn blue-button btn-primary" ng-click="submit()">
+               
+               
+                  <input type="reset" value="Reset" class="btn  btn-danger" >
+               
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+             </div>-->
+      <!--  </div></div></div> -->
+      
+     <div class="modal fade" id="myModal" role="dialog" >
+    <div class="modal-dialog" style="height:800px;width:70%">
+          <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>        
+        <div class="modal-body">
+          <p>Some text in the modal .</p>
+          <button ng-click="getPdf(requirement.fileType)">Try it</button>
+           <!-- <iframe src="http://localhost:8090/api/reports/37014c8f-6004-432f-92d7-57c8add074ef" height="500px" width="100%" name="pdfViewer"></iframe>  -->
+           <object style="width: 90%;height:625px;margin: 4%;" data="{{content}}" type="application/pdf">
+          
+<embed ng-src="{{content}}" type="application/pdf" />
+
+</object>
+           <!-- <embed ng-src="{{content}}" style="width:200px;height:200px;"></embed>  -->
+           <a ng-click="getPdf()"></a>
+        </div>
+      </div>
+    </div>
+  </div> 
+    
+  
+  <div  style="float:right" class="modal fade " id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLongTitle">Create Requirement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+     
+        <!-- <form class="font-weight-bold" ng-submit="submitrequirement()"> -->
+        <form class="font-weight-bold" [formGroup]="reqForm" >
+        <div data-spy="scroll">
+          <div class="modal-body"><h3>Job Details</h3>
+           <div class="card-body">
+            <div class="row">
+           <div class="col-md-4">
+           <div class="form-group">
+               <label>Job Title*</label>
+               <input type="text" class="form-control" ng-model="requirementForm.jobTitle" placeholder="job Title" required>
+            </div></div>
+            
+           
+            <div class="col-md-4">
+            <div class="form-group">
+               <label>Duration (Months)* </label>
+              <input type="text" class="form-control" ng-model="requirementForm.duration" placeholder="Select Duration" required>
+            </div></div>
+           
+            
+            <div class="col-md-4">
+            <div class="form-group">
+               <label>Pay Rate </label>
+               <input type="text" class="form-control"  ng-model="requirementForm.payRate" placeholder="pay rate" required>
+            </div></div></div>
+            
+            <div class="row">
+            <div class="col-md-5">
+           <div class="form-group">
+               <label>Bill Rate*</label>
+              <input type="text" class="form-control" ng-model="requirementForm.billRate" placeholder="Bill rate" required>
+            </div></div>
+
+            <div class="col-sm-5">
+           <div class="form-group">
+               <label>Bill Rate Frequency</label>
+               <input type="date" class="form-control" ng-model="requirementForm.billRateFrequency" placeholder="Bill rate frequency" required>
+            </div></div></div>
+            
+            <div class="row">
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>Start Date :</label>
+              <input type="date" class="form-control" ng-model="requirementForm.startDate" required>
+            </div></div>
+            
+            
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>Work Authorization* </label>
+               <input type="text" class="form-control" ng-model="requirementForm.workAuthorization" placeholder="Select a work Authorization" required>
+            </div></div>
+
+            <div class="col-sm-4">
+            <div class="form-group">
+               <label>Priority*</label>
+               <input type="text" class="form-control" ng-model="requirementForm.priority" required>
+            </div></div></div>
+
+            
+            
+            <div class="row">
+            <div class="col-sm-4">
+            <div class="form-group">
+               <label>Interview Mode</label>
+               <input type="text" class="form-control" ng-model="requirementForm.interviewMode" placeholder="Interview Mode" required>
+            </div></div>
+
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>No of Positions</label>
+               <input type="text" class="form-control" ng-model="requirementForm.noOfPositions" placeholder="no of positions" required>
+            </div></div>
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>Status</label>
+               <input type="text" class="form-control" ng-model="requirementForm.status" placeholder="true/false" required>
+            </div></div>
+            </div>
+            
+            <div class="row">
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Address</label>
+               <input type="text" class="form-control" ng-model="requirementForm.address" placeholder="Address" required>
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>City</label>
+               <input type="text" class="form-control" ng-model="requirementForm.city" placeholder="city" required>
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Country</label>
+               <select class="mdb-select md-form colorful-select dropdown-primary" ng-model="requirementForm.country">
+                    
+                     <option selected></option>
+                     <option value="India">India</option>
+                     <option value="Us">US</option>
+                     <option value="Canada">Canada</option>
+                     
+                     
+               </select>
+               <!--  <select name="country" ng-model="country" class="form-control">
+				
+				<option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
+			</select>-->
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Zip Code</label>
+               <input type="text" class="form-control" ng-model="requirementForm.zipCode" placeholder="zip code" required>
+            </div></div></div>
+
+            <div class="row">
+            <div class="col-sm-6">
+           <div class="form-group">
+               <label>Company Industry</label>
+               <input type="text" class="form-control" ng-model="requirementForm.company" placeholder="company" required>
+            </div></div>
+
+            <div class="col-sm-6">
+           <div class="form-group">
+               <label>Contract Type</label>
+               <input type="text" class="form-control" ng-model="requirementForm.ContractType" placeholder="select a contract Type" required>
+            </div></div></div>
+
+                        <h3>Skills</h3><br>
+            <div class="row">
+           <div class="col-md-4">
+           <div class="form-group">
+               <label>Skills</label>
+               <input type="text" class="form-control" ng-model="requirementForm.skills" placeholder="skills" required>
+            </div></div>
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>Degree</label>
+               <input type="text" class="form-control" ng-model="requirementForm.degree"  required>
+            </div></div>
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>Experience</label>
+               <input type="text" class="form-control" ng-model="requirementForm.experience" placeholder="year of experience" required>
+            </div></div></div>
+           
+            <div class="row">
+           
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>File Data</label>
+               <!-- <input type="file" id="file1" name="file" multiple ng-files="getTheFiles($files)" ng-model="requirementForm.FileData"/> -->
+               
+               <input type="file" id="file1" name="file" multiple file-model="requirementForm.FileData"/>
+               <input id="fileName" type="text">
+
+        <!-- <input type="button" ng-click="uploadFiles()" value="Upload" /> -->
+               
+               <!-- <input type="file" class="form-control" ng-model="requirementForm.FileData"> -->
+            </div></div></div>
+            
+            <div class="row">
+            <div class="form-group purple-border">
+            <label for="exampleFormControlTextarea4">Requirement Notes</label>
+             <textarea class="form-control" id="exampleFormControlTextarea4" rows="2"></textarea>
+            </div></div>
+
+	
+            </div></div></div>
+         <div class="modal-footer">
+           
+              <div class="form-group">
+              
+                  <!-- <input type="submit" value="Submit" class="btn blue-button btn-primary" data-submit="modal"> -->
+                  
+                  <input type="submit" value="Submit" class="btn blue-button btn-primary" ng-click="submit()">
+               
+               
+                  <input type="reset" value="Reset" class="btn  btn-danger" >
+               
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+             </div>
+      </form>
+      </div>
+     
+    </div>
+  </div>
+  
+<!--edit modal-->
+ 
+
+  <div  style="float:right" class="modal fade " id="exampleModalCenterEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title " id="exampleModalLongTitle">Edit requirement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+     
+        <form class="text-primary font-weight-bold"  style="margin-left:5px;margin-right:5px" ng-submit="editrequirementData(requirementForm.reqId)">
+         
+           <div data-spy="scroll">
+          <div class="modal-body"><h3>Edit Details Of Requirement</h3><br>
+           <div class="card-body">
+            <div class="row">
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>Requirement Id</label>
+               <input type="text" class="form-control" ng-model="requirementForm.reqId"  >
+            </div></div>
+           <div class="col-md-4">
+           <div class="form-group">
+               <label>Job Title</label>
+               <input type="text" class="form-control" ng-model="requirementForm.jobTitle">
+            </div></div>
+            
+           
+            <div class="col-md-4">
+            <div class="form-group">
+               <label>Duration (Months) </label>
+              <input type="text" class="form-control" ng-model="requirementForm.duration">
+            </div></div></div><br>
+           
+            <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+               <label>Pay Rate </label>
+               <input type="text" class="form-control"  ng-model="requirementForm.payRate">
+            </div></div>
+            
+           
+            <div class="col-md-5">
+           <div class="form-group">
+               <label>Bill Rate</label>
+              <input type="text" class="form-control" ng-model="requirementForm.billRate">
+            </div></div>
+
+            <div class="col-sm-5">
+           <div class="form-group">
+               <label>Bill Rate Frequency</label>
+               <input type="date" class="form-control" ng-model="requirementForm.billRateFrequency">
+            </div></div></div><br>
+            
+            <div class="row">
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>Start Date :</label>
+              <input type="text" class="form-control" ng-model="requirementForm.startDate">
+            </div></div>
+            
+            
+            <div class="col-sm-4">
+           <div class="form-group">
+               <label>Work Authorization* </label>
+               <input type="text" class="form-control" ng-model="requirementForm.workAutherization">
+            </div></div>
+
+            <div class="col-sm-4">
+            <div class="form-group">
+               <label>Priority</label>
+               <input type="text" class="form-control" ng-model="requirementForm.priority">
+            </div></div></div><br>
+
+           
+            
+            <div class="row">
+            <div class="col-sm-5">
+            <div class="form-group">
+               <label>Interview Mode</label>
+               <input type="text" class="form-control" ng-model="requirementForm.interviewMode">
+            </div></div>
+
+            <div class="col-sm-5">
+           <div class="form-group">
+               <label>No of Positions</label>
+               <input type="text" class="form-control" ng-model="requirementForm.noOfPositions">
+            </div></div></div><br>
+            
+            <div class="row">
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Address</label>
+               <input type="text" class="form-control" ng-model="requirementForm.address">
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>City</label>
+               <input type="text" class="form-control" ng-model="requirementForm.city">
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Country</label>
+               <input type="text" class="form-control" ng-model="requirementForm.country">
+            </div></div>
+
+            <div class="col-sm-3">
+           <div class="form-group">
+               <label>Zip Code</label>
+               <input type="text" class="form-control" ng-model="requirementForm.zipCode">
+            </div></div></div><br>
+
+            <div class="row">
+            <div class="col-sm-6">
+           <div class="form-group">
+               <label>Company Industry</label>
+               <input type="text" class="form-control" ng-model="requirementForm.company">
+            </div></div>
+
+            <div class="col-sm-6">
+           <div class="form-group">
+               <label>Contract Type</label>
+               <input type="text" class="form-control" ng-model="requirementForm.ContractType">
+            </div></div></div><br>
+
+           
+            
+            
+            
+            <h3>Skills</h3><br>
+            <div class="row">
+           <div class="col-md-4">
+           <div class="form-group">
+               <label>Skills</label>
+               <input type="text" class="form-control" ng-model="requirementForm.skills">
+            </div></div>
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>Degree</label>
+               <input type="text" class="form-control" ng-model="requirementForm.degree">
+            </div></div>
+            <div class="col-md-4">
+           <div class="form-group">
+               <label>Experience</label>
+               <input type="text" class="form-control" ng-model="requirementForm.experience">
+            </div></div></div><br>
+            </div></div><br>
+         <div class="modal-footer">
+           
+              <div class="form-group">
+              
+                  <input type="submit" value="Edit" class="btn blue-button btn-primary" data-submit="modal">
+               
+               
+                  <input type="reset" value="Reset" class="btn  btn-danger" >
+               
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+             </div></div>
+           </div>
+      </form>
+      </div></div>
+     
+    </div>
+  
+	
+  
+
+      
+      <br>
+      
+      <table class=" table table-sm  w-100 table-hover table-striped" data-spy="scroll">
+         <tr class="" style="background-color:lightpink">
+           <th>Requirement</th>
+            <th>Country</th>
+            <th>Requirement Id</th>
+            <th>Bill Rate</th>
+            <th>Contract Type</th>
+            <th>Client Details</th>
+            <th>Priority</th>
+            <th>Created Time</th>
+            <th>Status</th>
+            <th>Attachments</th>
+            <!-- <th>File Data</th> -->
+            
+            <th colspan=3>Actions</th>
+            
+         </tr>  
+     
+         <!-- $scope.requirements -->
+         <!-- <tr class="bg-light text-primary " ng-repeat="requirement in requirements"> -->
+       <tr class="bg-light text-primary " ng-repeat="requirement in requirements">
+            <td> {{requirement.jobTitle }}</td>
+            <td> {{requirement.country}}</td>
+            <td> {{requirement.reqId}}</td>
+            <td> {{ requirement.billRate }}</td>
+            <td> {{requirement.ContractType}}</td>
+            <td> {{requirement.clientDetails}}</td>
+             <td> {{requirement.priority}}</td>
+              <td> {{requirement.createdDate}}</td>
+               <td> {{requirement.status}}</td>
+               <td><a href="file:///F:/{{requirement.fileType}}" target="_parent">{{requirement.fileType}}</a>
+               
+               <i class="fa fa-download" aria-hidden="true" ng-click="downloadFile(requirement.fileType)"></i>
+               <!--  <i class="fa fa-eye" aria-hidden="true"></i>-->
+             
+<!-- <button type="button"  data-toggle="modal" data-target="#exampleModalCenterView" class="btn font-weight-bold btn-sm edit-button "> -->  <a  ng-click="getPdf(requirement.fileType)" ><span class="fa fa-eye"></span></a><!-- </button> -->
+
+<!-- <a  ng-click="getPdf(requirement.fileType)" data-toggle="modal" data-target="#myModal" ><span class="fa fa-eye"></span></a></button> -->
+
+               <!-- <input type="button" value="Download" ng-click="downloadFile(requirement.fileType)"> --></td>   
+               <!-- <td><a>{{requirement.FileData}}</a></td> -->            
+            <td>
+             
+          <button type="button"  data-toggle="modal" data-target="#exampleModalCenterEdit" class="btn font-weight-bold btn-sm edit-button ">  <a  ng-click="editrequirement(requirement)"  ><span class="glyphicon glyphicon-sm glyphicon-edit"></span></a></button>
+           
+          <button type="button"  data-toggle="modal" data-target="#deleterequirementModal" class="btn delete-button btn-light btn-sm font-weight-bold ">  <a  ng-click="deleterequirement(requirement)" >
+           <span class="fas fa-trash"></span></a>
+           </button>           
+            
+            </td>
+         </tr>
+      </table>
+   <!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>-->
+    
+      <!--<script type="text/javascript">
+    $(function () {
+        var fileName = "/download/'+fileName+'/db/";
+        $("#btnShow").click(function () {
+            $("#dialog").dialog({
+                modal: true,
+                title: fileName,
+                width: 540,
+                height: 450,
+                buttons: {
+                    Close: function () {
+                        $(this).dialog('close');
+                    }
+                },
+                open: function () {
+                    var object = "<object data=\"{fileType}\" type=\"application/pdf\" width=\"500px\" height=\"300px\">";
+                    object += "If you are unable to view file, you can download from <a href = \"{fileType}\">here</a>";
+                    object += " or download <a target = \"_blank\" href = \"http://get.adobe.com/reader/\">Adobe PDF Reader</a> to view the file.";
+                    object += "</object>";
+                    object = object.replace(/{fileType}/g, "Files/" + fileName);
+                    $("#dialog").html(object);
+                }
+            });
+        });
+    });
+</script> -->
+  
+    <pagination boundary-links="true" 
+    max-size="3" 
+    items-per-page="itemsPerPage"
+    total-items="totalRowsCount" 
+    ng-model="currentPage" 
+    ng-change="pageChanged()"></pagination>
+     
+     <!-- <script>
+     function uploadOnChange(e){
+    	 var fileName=e.value;var lastIndex=fileName.lastIndexOf("");
+     }
+     
+     </script> -->
+   <!-- <script>
+    angular.module('ReqManagement', [])
+        .directive('ngFiles', ['$parse', function ($parse) {
+
+            function fn_link(scope, element, attrs) {
+                var onChange = $parse(attrs.ngFiles);
+                element.on('change', function (event) {
+                    onChange(scope, { $files: event.target.files });
+                });
+            };
+
+            return {
+                link: fn_link
+            }
+        } ])
+        .controller('ReqController', function ($scope, $http) {
+
+            var formdata = new FormData();
+            $scope.getTheFiles = function ($files) {
+                angular.forEach($files, function (value, key) {
+                    formdata.append(key, value);
+                });
+            };
+			
+            // NOW UPLOAD THE FILES.
+            $scope.uploadFiles = function () {
+            	formdata.append("file",formdata.get(0));
+                var request = {
+                    method: 'POST',
+                    url: '/uploadfile/',
+                    data: formdata,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                };
+
+                // SEND THE FILES.
+                $http(request)
+                    .success(function (d) {
+                        alert(d);
+                    })
+                    .error(function () {
+                    });
+            }
+        });
+</script> -->
+   
+ <!--  
+<script>
+$(document).ready(function(){
+  $(".nav-tabs a").click(function(){
+    $(this).tab('show');
+  });
+}); 
+<!-- </script>  -->
+ <!--  </div> -->
+ 
+ </body>
+</html>  
